@@ -8,11 +8,11 @@ import Gui.SudokuGUI;
 public class sudoku9x9 {
 	public sudoku9x9(){}
 	private SudokuGUI interficie;
-	public sudoku9x9(boolean[][] t){
-		interficie = new SudokuGUI("Sudoku",800,900,t);
+	public sudoku9x9(boolean[][] t, int mode){
+		if(mode == 2)interficie = new SudokuGUI("Sudoku",800,900,t);
 	}
 	
-	public int[][] sudoku9x9(int f, int c,int[][] x ,int[][] aux,boolean[][] marcatgef,boolean[][] marcatgec,boolean[][] marcatgeq,String pathOutput) throws IOException{
+	public int[][] sudoku9x9(int f, int c,int[][] x ,int[][] aux,boolean[][] marcatgef,boolean[][] marcatgec,boolean[][] marcatgeq,int mode, String pathOutput) throws IOException{
 		boolean bona = true;
 		marcatge marc = new marcatge();//Demanem memoria per un objecte que  ens permetra marcar i desmarcar.
 		main m = new main();
@@ -40,7 +40,7 @@ public class sudoku9x9 {
 							marcatgec=marc.marcar9x9(x[f][c]-1, c, marcatgec);
 							marcatgeq=marc.marcar9x9q(x[f][c]-1,f,c,marcatgeq);
 							c++;
-							x=sudoku9x9(f, c, x,aux,marcatgef,marcatgec,marcatgeq,pathOutput);
+							x=sudoku9x9(f, c, x,aux,marcatgef,marcatgec,marcatgeq,mode,pathOutput);
 							c--;
 							marcatgef=marc.desmarcar9x9(f, x[f][c]-1, marcatgef);
 							marcatgec=marc.desmarcar9x9(x[f][c]-1, c, marcatgec);
@@ -56,7 +56,7 @@ public class sudoku9x9 {
 							marcatgeq=marc.marcar9x9q(x[f][c]-1,f,c,marcatgeq);			
 							f++;
 							c=0;
-							x=sudoku9x9(f, c, x,aux,marcatgef,marcatgec,marcatgeq,pathOutput);
+							x=sudoku9x9(f, c, x,aux,marcatgef,marcatgec,marcatgeq,mode,pathOutput);
 							f--;
 							c=8;
 							marcatgef=marc.desmarcar9x9(f, x[f][c]-1, marcatgef);
@@ -67,38 +67,17 @@ public class sudoku9x9 {
 					if(c==8 && f==8){
 						if(fa.bona(f, c, x,marcatgef,marcatgec,marcatgeq)){
 							m.setTFin(System.currentTimeMillis());
-							File archivo = new File(pathOutput);
-							BufferedWriter bw;
+							
 							marcatgef=marc.marcar9x9(f, x[f][c]-1, marcatgef);
 							marcatgec=marc.marcar9x9(x[f][c]-1, c, marcatgec);
 							marcatgeq=marc.marcar9x9q(x[f][c]-1,f,c,marcatgeq);	
-							int af=0;
-							int ac=0;
-							char ch;
-							// El fichero ya existe
-							bw = new BufferedWriter(new FileWriter(archivo));
-							if(archivo.exists()) {
-							      // El fichero ya existe
-							      while(af<9){
-						    	  	ac=0;
-									while(ac<9){
-										ch =(char)('0'+x[af][ac]);
-							    		  bw.write(ch);
-										ac++;
-									}
-									bw.write('\n');
-									af++;
-							      }
-							}
-							
+
+							new Visualitzacio().visualitza(mode,pathOutput, x, interficie);
 							
 							m.setTiempo(m.getTFin()-m.getTInicio()); //Calculamos los milisegundos de diferencia
 							float sec = m.getTiempo()/1000;
 							System.out.println("Temps d'execució " +sec+ " seconds" ); 
 							System.out.println();
-							bw.write("Temps d'execució " +sec+ " seconds" );
-							bw.close();
-							interficie.updateBoard(x);
 						}
 					}
 				}
@@ -108,47 +87,28 @@ public class sudoku9x9 {
 				if(c==8){
 					f++;
 					c=0;
-					x=sudoku9x9(f,c,x,aux,marcatgef,marcatgec,marcatgeq,pathOutput);
+					x=sudoku9x9(f,c,x,aux,marcatgef,marcatgec,marcatgeq,mode,pathOutput);
 					f--;
 					c=8;
 				}else{
 					c++;
-					x=sudoku9x9(f, c,x,aux,marcatgef,marcatgec,marcatgeq,pathOutput);
+					x=sudoku9x9(f, c,x,aux,marcatgef,marcatgec,marcatgeq,mode,pathOutput);
 					c--;
 				}
 				if(c==8 && f==8){
 					if(fa.bona(f, c, x,marcatgef,marcatgec,marcatgeq)){
 						m.setTFin(System.currentTimeMillis());
-						File archivo = new File(pathOutput);
-						BufferedWriter bw;
-						int af=0;
-						int ac=0;
-						char ch;
+				
 						marcatgef=marc.marcar9x9(f, x[f][c]-1, marcatgef);
 						marcatgec=marc.marcar9x9(x[f][c]-1, c, marcatgec);
 						marcatgeq=marc.marcar9x9q(x[f][c]-1,f,c,marcatgeq);	
-						// El fichero ya existe
-						bw = new BufferedWriter(new FileWriter(archivo));
-						if(archivo.exists()) {
-						      while(af<9){
-					    	  	ac=0;
-								while(ac<9){
-									ch =(char)('0'+x[af][ac]);
-						    		  bw.write(ch);
-									ac++;
-								}
-								bw.write('\n');
-								af++;
-						      }
-						}
+					
+						new Visualitzacio().visualitza(mode,pathOutput,x,interficie);
 						
 						m.setTiempo(m.getTFin()-m.getTInicio()); //Calculamos los milisegundos de diferencia
 						float sec = m.getTiempo()/1000;
 						System.out.println("Temps d'execució " +sec+ " seconds" ); 
 						System.out.println();
-						bw.write("Temps d'execució " +sec+ " seconds" );
-						bw.close();
-						interficie.updateBoard(x);
 					}
 					
 				}

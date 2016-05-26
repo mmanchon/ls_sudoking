@@ -55,7 +55,7 @@ public class main {
 		int op = f.comprovacioFitxerUser(args[0]);
 		
 		Execucio exec = new Execucio();
-		exec.operation(op, args[0], args[2]);
-	}	
+		exec.operation(op, args[0],Integer.parseInt(args[1]), args[2]);
+	}
 
 }

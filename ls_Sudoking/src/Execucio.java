@@ -48,7 +48,7 @@ public class Execucio {
 	}
 
 
-	public void operation(int opcio, String pathInput, String pathOutput) throws IOException{
+	public void operation(int opcio, String pathInput,int mode, String pathOutput) throws IOException{
 
 		int f;
 		int c;
@@ -76,17 +76,15 @@ public class Execucio {
 
 			s_file = fi.read9x9(pathInput);
 			char[] file = s_file.toCharArray();
-			//System.out.println(file);//comprovem que el mapa del sudoku s'hagi introduit correctament
+			//comprovem que el mapa del sudoku s'hagi introduit correctament
 
 			Func_Auxiliar fa=new Func_Auxiliar();
-			//System.out.print(file);
 			m.setAux(fa.conversio9x9(file));
 			aux_a = m.getAux();
 			indexf=0;
 			while(indexf<9){
 				indexc=0;
 				while(indexc<9){
-					System.out.print(aux_a[indexf][indexc]+ " ");
 					if(aux_a[indexf][indexc]==0){
 						cT[indexf][indexc]= true;
 					}else{
@@ -97,11 +95,10 @@ public class Execucio {
 					}
 					indexc++;
 				}
-				System.out.println();
 				indexf++;
 			}
 			m.setcTaulell(cT);
-			sudoku9x9 s=new sudoku9x9(m.getcTaulell());
+			sudoku9x9 s=new sudoku9x9(m.getcTaulell(),mode);
 
 			aux_a=m.getAux();
 			indexf = 0;
@@ -116,7 +113,7 @@ public class Execucio {
 			}
 
 
-			solucio = s.sudoku9x9(0,0,x,m.getAux(),marcatgef,marcatgec,marcatgeq,pathOutput);
+			solucio = s.sudoku9x9(0,0,x,m.getAux(),marcatgef,marcatgec,marcatgeq,mode,pathOutput);
 
 			break;
 		case 2:
@@ -169,35 +166,20 @@ public class Execucio {
 				while(indexc<16){
 					if(aux_a2[indexf][indexc]==0){
 						c_t2[indexf][indexc]= true;
-						//System.out.print(marcf[indexf][indexc]+" ");
 					}else{
 						marcatgef=marc.marcar16x16(indexf,aux_a2[indexf][indexc]-1,marcf);
 						marcatgec=marc.marcar16x16(aux_a2[indexf][indexc]-1, indexc, marcc);
 						marcatgeq=marc.marcar16x16q(aux_a2[indexf][indexc]-1,indexf,indexc,marcq);
 						c_t2[indexf][indexc]= false;
-						//System.out.print(marcf[indexf][indexc]+" ");
 					}
 
 					indexc++;
 				}
-				//System.out.println();
 				indexf++;
 			}
 			m2.setcTaulell(c_t2);
-			/*indexf=0;
-				while(indexf<16){
-					indexc=0;
-					while(indexc<16){
-						System.out.print(marcf[indexf][indexc]+" ");
-
-						indexc++;
-					}
-					System.out.println();
-					indexf++;
-				}*/
-			sudoku16x16 s2=new sudoku16x16(m2.getcTaulell());
-			//System.out.println("arribo");
-			solucio2 = s2.sudoku16x16(0,0,x2,m2.getAux(),marcf,marcc,marcq);
+			sudoku16x16 s2=new sudoku16x16(m2.getcTaulell(), mode);
+			solucio2 = s2.sudoku16x16(0,0,x2,m2.getAux(),marcf,marcc,marcq,mode,pathOutput);
 			break;
 
 		case 3:
@@ -211,13 +193,11 @@ public class Execucio {
 			int[] file3=new int[441];
 			int c3=0, f3=0;
 			resposta = fi3.readsamurai(pathInput);
-			//System.out.println(resposta);
 			int k=0;
 			String[] cadenas = resposta.split(" ");
 
 			while(k<cadenas.length-1){
 				cadenas[k]=cadenas[k+1];
-				//System.out.print(cadenas[k]);
 				k++;
 			}
 
@@ -231,19 +211,11 @@ public class Execucio {
 						file3[i]=Integer.parseInt(cadenas[i]);
 					}
 				}
-				//System.out.println(cadenas[i]);
 			}
 
 			Func_Auxiliar fa3=new Func_Auxiliar();
 			m3.setAux(fa3.conversiosam(file3));
 			aux_a3=m3.getAux();
-			/*for(int fila=0;fila<21;fila++){
-					for(int col=0;col<21;col++){
-						System.out.print(aux_a3[fila][col]+" ");
-					}
-					System.out.println();
-					}
-			 */
 			indexf=0;
 
 			while(indexf<21){
