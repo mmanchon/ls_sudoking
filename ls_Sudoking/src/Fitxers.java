@@ -165,6 +165,40 @@ public class Fitxers {
 		}
 		return  ct;
 	}	
+	
+	public void writeSamurai(String pathOutput,int[][] x){
+		File archivo = new File(pathOutput);
+		BufferedWriter bw;
+		int af=0;
+		int ac=0;
+		char ch;
+		// El fichero ya existe
+		try {
+			bw = new BufferedWriter(new FileWriter(archivo));
+			if(archivo.exists()) {
+			      // El fichero ya existe
+			      bw = new BufferedWriter(new FileWriter(archivo));
+			      String auxX;
+			      while(af<21){
+			    	  auxX= new String(Arrays.toString(x[af]));
+			    	  char[] auxXX =  auxX.toCharArray();
+			    	  ac=0;
+			    	  while(ac<auxXX.length){
+			    		  bw.write(auxXX[ac]);
+			    		  ac++;	
+			    	  }
+			    	  bw.write("\n");
+			    	  af++;
+			      }
+			}
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
 
 }
 

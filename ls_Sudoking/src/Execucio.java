@@ -233,7 +233,7 @@ public class Execucio {
 			m3.setcTaulell(c_t3);
 
 
-			Samurai sam = new Samurai(m3.getcTaulell());
+			Samurai sam = new Samurai(m3.getcTaulell(),mode);
 			indexf=0;
 			while(indexf<21){
 				indexc=0;
@@ -244,7 +244,7 @@ public class Execucio {
 				indexf++;
 			}
 
-			solucio3 = sam.resoldre(x3);
+			solucio3 = sam.resoldre(x3,mode,pathOutput);
 		}
 
 	}	

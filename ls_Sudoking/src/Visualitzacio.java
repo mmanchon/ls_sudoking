@@ -35,7 +35,10 @@ public class Visualitzacio {
 				f.write16x16(path,matrix2);
 				break;
 			case 21: 
+				f.writeSamurai(path,matrix2);
 				break;
+			default:
+				System.out.println("[System]-->Desconegut tipus: "+tipus);
 				
 			}
 		}

@@ -8,11 +8,11 @@ public class Samurai {
 	
 	public Samurai(){}
 	private SudokuGUI interficie;
-	public Samurai(boolean[][] t){
-		interficie = new SudokuGUI("Sudoku",800,900,t);
+	public Samurai(boolean[][] t, int mode){
+		if(mode == 2)interficie = new SudokuGUI("Sudoku",800,900,t);
 	}
 
-	public int[][] resoldre(int[][] s){
+	public int[][] resoldre(int[][] s,int mode, String pathOutput){
 		int[][] x1 = new int[9][9];
 		int[][] x2 = new int[9][9];
 		int[][] x3 = new int[9][9];
@@ -186,8 +186,7 @@ public class Samurai {
 			}
 			System.out.println();
 		}*/
-		interficie.updateBoard(s);
-		s = solucionar(0, 0, m, s, 0, marc);
+		s = solucionar(0, 0, m, s, 0, marc,mode,pathOutput);
 
 		return s;
 	}
@@ -200,7 +199,7 @@ public class Samurai {
 		}
 		return marc;
 	}
-	public int[][] omple(int[][] s, int[][] x, int ind,matrius[] m){
+	public int[][] omple(int[][] s, int[][] x, int ind,matrius[] m,int mode, String pathOutput){
 		int c=0, f=0, c2=0, f2=0;
 
 		if(ind==0){
@@ -268,7 +267,7 @@ public class Samurai {
 				}
 				iff++;
 			}
-			interficie.updateBoard(s);
+			new Visualitzacio().visualitza(mode,pathOutput,s,interficie);
 		}
 		
 		return s;
@@ -296,24 +295,12 @@ public class Samurai {
 	}
 
 
-	public int[][] solucionar(int f, int c, matrius[] m, int[][] s, int ind,marcatgeSamu[] marc){
+	public int[][] solucionar(int f, int c, matrius[] m, int[][] s, int ind,marcatgeSamu[] marc,int mode, String pathOutput){
 
 		Fun_Samu fs = new Fun_Samu();
 		boolean bona = true;
 		int f2=0, c2=0;
 		int[][] x= new int [9][9];
-		//if(ind == 5)fi++;
-
-		/*matriu=marc[1].getMarcatgef();
-
-			for(int i =0;i<9;i++){
-				for(int j=0;j<9;j++){
-					System.out.print(matriu[i][j]);
-				}
-				System.out.println();
-			}
-			System.out.println();
-		 */
 		//if(ind==5)ind--;//Amb aquest condicional evitem que el indicador de matrius surti de marge.
 		if(ind!=5){
 			x=m[ind].getMatriu();
@@ -324,13 +311,13 @@ public class Samurai {
 			int[][] matriuf = marc[ind].getMarcatgef();
 			int[][] matriuc = marc[ind].getMarcatgec();
 			int[][] matriuq = marc[ind].getMarcatgeq();
-			System.out.println(ind);
+			//System.out.println(ind);
 			
 			if(fs.HiHaSamu(f,c,m[ind])){
 				//possem el valor a 0
 				x[f][c]=0;
 				//mirem que hi hagi "germans"(mes valors)
-				while (x[f][c]<9 && fi==0){
+				while (x[f][c]<9){
 
 					//incrementem el valor
 					if(x[f][c]<9){
@@ -349,7 +336,7 @@ public class Samurai {
 
 						if(bona = fs.bonasamu(f, c, m, ind,marc)){
 							c++;
-							s = solucionar(f, c, m, s, ind,marc);
+							s = solucionar(f, c, m, s, ind,marc,mode,pathOutput);
 							c--;
 
 						}
@@ -360,7 +347,7 @@ public class Samurai {
 
 							f++;
 							c=0;
-							s = solucionar(f, c, m, s, ind,marc);
+							s = solucionar(f, c, m, s, ind,marc,mode,pathOutput);
 							f--;
 							c=8;
 						}
@@ -374,13 +361,13 @@ public class Samurai {
 								m = fs.uns(m);
 
 							}
-							s = omple(s,x,ind,m);
+							s = omple(s,x,ind,m,mode,pathOutput);
 							if(ind<4){
 								//interficie.updateBoard(s);
 								//if(ind ==0){
 									//m = afegirValors(x,m);
 								//}
-								s = solucionar(0, 0, m, s, ind+1,marc);
+								s = solucionar(0, 0, m, s, ind+1,marc,mode,pathOutput);
 								if(ind==0){
 									marc = desmarcar(marc,x,m);
 									//m = treureValors(x,m);
@@ -403,12 +390,12 @@ public class Samurai {
 				if(c==8){
 					f++;
 					c=0;
-					s = solucionar(f,c, m, s, ind,marc);
+					s = solucionar(f,c, m, s, ind,marc,mode,pathOutput);
 					f--;
 					c=8;
 				}else{
 					c++;
-					s = solucionar(f, c, m, s, ind,marc);
+					s = solucionar(f, c, m, s, ind,marc,mode,pathOutput);
 					c--;
 				}
 				if(c==8 && f==8){
@@ -420,16 +407,17 @@ public class Samurai {
 							m = fs.uns(m);
 
 						}
-						s = omple(s,x,ind,m);
-						if(ind==4){
+						
+
+						s = omple(s,x,ind,m,mode,pathOutput);
+						/*if(ind==4){
 							fi=fi+1;
-						}
+						}*/
 						if(ind<4){
-							System.out.println("HOLA");
 							//if(ind ==0){
 								//m = afegirValors(x,m);
 							//}
-							s = solucionar(0, 0, m, s, ind+1,marc);
+							s = solucionar(0, 0, m, s, ind+1,marc,mode,pathOutput);
 							if(ind==0){
 								marc = desmarcar(marc,x,m);
 							//	m=treureValors(x,m);
